@@ -62,7 +62,7 @@ users:
 ## Installation
 
 ```
-go install github.com/mattn/oci-token-cache
+go install github.com/mattn/oci-token-cache@latest
 ```
 
 ## License
