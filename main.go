@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -12,9 +13,16 @@ import (
 	"os/exec"
 	"os/user"
 	"path/filepath"
+	"runtime"
 	"syscall"
 	"time"
 )
+
+const name = "oci-token-cache"
+
+const version = "0.0.1"
+
+var revision = "HEAD"
 
 type tokenInfo struct {
 	APIVersion string `json:"apiVersion"`
@@ -26,7 +34,14 @@ type tokenInfo struct {
 }
 
 func main() {
+	var showVersion bool
+	flag.BoolVar(&showVersion, "V", false, "Print the version")
 	flag.Parse()
+	if showVersion {
+		fmt.Printf("%s %s (rev: %s/%s)\n", name, version, revision, runtime.Version())
+		return
+	}
+
 	cu, err := user.Current()
 	if err != nil {
 		log.Fatal(err)
