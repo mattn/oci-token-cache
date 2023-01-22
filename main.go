@@ -52,15 +52,14 @@ func main() {
 		defer f.Close()
 		var ti tokenInfo
 		err = json.NewDecoder(f).Decode(&ti)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if time.Now().Add(time.Second * 30).Before(ti.Status.ExpirationTimestamp) {
-			err = json.NewEncoder(os.Stdout).Encode(ti)
-			if err != nil {
-				log.Fatal(err)
+		if err == nil {
+			if time.Now().Add(time.Second * 30).Before(ti.Status.ExpirationTimestamp) {
+				err = json.NewEncoder(os.Stdout).Encode(ti)
+				if err != nil {
+					log.Fatal(err)
+				}
+				return
 			}
-			return
 		}
 	}
 
